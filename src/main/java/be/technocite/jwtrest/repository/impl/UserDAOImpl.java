@@ -17,7 +17,6 @@ public class UserDAOImpl implements UserDAO {
         return users.stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst()
-
                 .orElse(null);
     }
 
