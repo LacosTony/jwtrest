@@ -28,7 +28,13 @@ public class ProductService implements Function<Product, ProductDTO> {
     }
 
     public ProductDTO findById(String id) {
-        return apply(productDAO.findById(id));
+        Product product = productDAO.findById(id);
+        if (product != null) {
+            return apply(product);
+        } else {
+            throw new RuntimeException("product not found");
+        }
+        //return apply(productDAO.findById(id));
     }
 
     @Override
