@@ -4,7 +4,6 @@ import be.technocite.jwtrest.model.User;
 import be.technocite.jwtrest.repository.UserDAO;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,7 @@ public class UserDAOImpl implements UserDAO {
         return users.stream()
                 .filter(user -> user.getEmail().equals(email))
                 .findFirst()
+
                 .orElse(null);
     }
 
