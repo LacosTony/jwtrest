@@ -1,5 +1,6 @@
 package be.technocite.jwtrest.service;
 
+import be.technocite.jwtrest.api.dto.CreateProductCommand;
 import be.technocite.jwtrest.api.dto.ProductDTO;
 import be.technocite.jwtrest.model.Product;
 import be.technocite.jwtrest.repository.ProductDAO;
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class ProductService implements Function<Product, ProductDTO> {
@@ -20,7 +23,7 @@ public class ProductService implements Function<Product, ProductDTO> {
         return productDAO.findAll()
                 .stream()
                 .map(this)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
     public ProductDTO save(Product product) {
@@ -35,6 +38,14 @@ public class ProductService implements Function<Product, ProductDTO> {
             throw new RuntimeException("product not found");
         }
         //return apply(productDAO.findById(id));
+    }
+
+    public String handleCreateCommand(CreateProductCommand command) {
+        return save(new Product(
+                UUID.randomUUID().toString(),
+                command.getName(),
+                command.getPrice()))
+                .getId();
     }
 
     @Override
