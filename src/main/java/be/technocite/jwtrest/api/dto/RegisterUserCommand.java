@@ -12,6 +12,9 @@ public class RegisterUserCommand {
     private String fullname;
     private Set<Role> roles;
 
+    public RegisterUserCommand() {
+    }
+
     public String getEmail() {
         return email;
     }
