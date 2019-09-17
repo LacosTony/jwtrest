@@ -54,15 +54,13 @@ public class UserService implements UserDetailsService {
 
     public User findByEmail(String email) {
         User user = userDAO.findByEmail(email);
-        if (user != null) {
-            return user;
-        } else {
-            throw new RuntimeException("user not found!");
-        }
+        return user;
     }
 
     public User createUser(RegisterUserCommand command) {
         User user = new User();
+        user.setEmail(command.getEmail());
+        user.setFullname(command.getFullname());
         user.setPassword(bCryPasswordEncoder.encode(command.getPassword()));
         user.setEnabled(true);
         user.setRoles(new HashSet<>(command.getRoles()));

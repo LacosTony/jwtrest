@@ -12,7 +12,7 @@ public class RegisterUserCommand {
     private String fullname;
     private Set<Role> roles;
 
-    public RegisterUserCommand() {
+    protected RegisterUserCommand() {
     }
 
     public String getEmail() {
