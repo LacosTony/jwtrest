@@ -1,7 +1,7 @@
 package be.technocite.jwtrest.config;
 
 import be.technocite.jwtrest.model.Role;
-import be.technocite.jwtrest.service.CustomUserDetailsService;
+import be.technocite.jwtrest.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,7 +20,7 @@ public class JwtTokenProvider {
     private long validityMs = 3600000; //1h
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @PostConstruct
     private void encodeSecret() {

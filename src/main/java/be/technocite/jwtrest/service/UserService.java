@@ -1,5 +1,6 @@
 package be.technocite.jwtrest.service;
 
+import be.technocite.jwtrest.api.dto.RegisterUserCommand;
 import be.technocite.jwtrest.model.Role;
 import be.technocite.jwtrest.model.User;
 import be.technocite.jwtrest.repository.UserDAO;
@@ -9,17 +10,22 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private PasswordEncoder bCryPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -44,5 +50,22 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getPassword(),
                 authorities
         );
+    }
+
+    public User findByEmail(String email) {
+        User user = userDAO.findByEmail(email);
+        if (user != null) {
+            return user;
+        } else {
+            throw new RuntimeException("user not found!");
+        }
+    }
+
+    public User createUser(RegisterUserCommand command) {
+        User user = new User();
+        user.setPassword(bCryPasswordEncoder.encode(command.getPassword()));
+        user.setEnabled(true);
+        user.setRoles(new HashSet<>(command.getRoles()));
+        return userDAO.save(user);
     }
 }
